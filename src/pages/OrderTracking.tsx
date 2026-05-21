@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { AnimatedRouteMap } from "@/components/AnimatedRouteMap";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/config";
 
 export default function OrderTracking() {
   const { id } = useParams();
@@ -37,7 +38,7 @@ export default function OrderTracking() {
     setDownloadingInvoice(true);
     try {
       const token = getCustomerToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${id}/invoice`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/invoice`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       
@@ -73,7 +74,7 @@ export default function OrderTracking() {
     setCancellingOrder(true);
     try {
       const token = getCustomerToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${id}`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ export default function OrderTracking() {
     if (!id) return;
     try {
       const token = getCustomerToken();
-      const res = await fetch(`http://localhost:3001/api/orders`, {
+      const res = await fetch(`${API_URL}/api/orders`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch order");
@@ -123,7 +124,7 @@ export default function OrderTracking() {
     const token = getCustomerToken();
     if (!token) return;
 
-    const eventSource = new EventSource(`http://localhost:3001/api/orders/notifications/sse?token=${token}`);
+    const eventSource = new EventSource(`${API_URL}/api/orders/notifications/sse?token=${token}`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -155,7 +156,7 @@ export default function OrderTracking() {
     setSendingMsg(true);
     try {
       const token = getCustomerToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${id}/messages`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

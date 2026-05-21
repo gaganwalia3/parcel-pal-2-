@@ -7,6 +7,7 @@ import { Plus, Package, Clock, CheckCircle, TrendingUp, Loader2 } from "lucide-r
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { API_URL } from "@/config";
 
 const UserDashboard = () => {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ const UserDashboard = () => {
     queryKey: ["orders", user?.id],
     queryFn: async () => {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch(`http://localhost:3001/api/orders/user/${user?.id}`, {
+      const res = await fetch(`${API_URL}/api/orders/user/${user?.id}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch orders");

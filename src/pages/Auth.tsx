@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Package, Truck, User } from "lucide-react";
+import { API_URL } from "@/config";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function Auth() {
     setLoading(true);
     try {
       if (type === "signup") {
-        const res = await fetch('http://localhost:3001/api/auth/register', {
+        const res = await fetch(`${API_URL}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -40,7 +41,7 @@ export default function Auth() {
         toast.success("Account created! Please log in.");
         // Switch to login tab in a real app, but for now we'll just show the toast
       } else {
-        const res = await fetch('http://localhost:3001/api/auth/login', {
+        const res = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })

@@ -58,6 +58,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+import { API_URL } from "@/config";
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -100,7 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!token) return null;
 
     try {
-      const res = await fetch("http://localhost:3001/api/auth/profile", {
+      const res = await fetch(`${API_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

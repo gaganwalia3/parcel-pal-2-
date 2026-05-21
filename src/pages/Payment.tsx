@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
+import { API_URL } from "@/config";
 
 export default function Payment() {
   const location = useLocation();
@@ -44,7 +45,7 @@ export default function Payment() {
 
     try {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch("http://localhost:3001/api/orders", {
+      const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

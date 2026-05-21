@@ -97,7 +97,8 @@ export const uploadImage = async (base64Data, folder = 'general') => {
     fs.writeFileSync(filePath, imageBuffer);
     
     // Return relative backend URL served statically
-    return `http://localhost:3001/uploads/${filename}`;
+    const backendUrl = env.BACKEND_URL || process.env.BACKEND_URL || "http://localhost:3001";
+    return `${backendUrl}/uploads/${filename}`;
   } catch (error) {
     console.error('[Cloudinary Service] Local upload fallback failed:', error);
     throw new Error(`Failed to upload image: ${error.message}`);

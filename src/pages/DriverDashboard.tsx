@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { haversineDistance } from "@/lib/geo";
 import { AnimatedRouteMap } from "@/components/AnimatedRouteMap";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/config";
 
 export default function DriverDashboard() {
   const { user, refreshProfile } = useAuth();
@@ -69,7 +70,7 @@ export default function DriverDashboard() {
     setLoadingWallet(true);
     try {
       const token = getDriverToken();
-      const res = await fetch("http://localhost:3001/api/wallet/balance", {
+      const res = await fetch(`${API_URL}/api/wallet/balance`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -95,7 +96,7 @@ export default function DriverDashboard() {
     const token = getDriverToken();
     if (!token) return;
 
-    const eventSource = new EventSource(`http://localhost:3001/api/orders/notifications/sse?token=${token}`);
+    const eventSource = new EventSource(`${API_URL}/api/orders/notifications/sse?token=${token}`);
 
     eventSource.onmessage = (event) => {
       try {
@@ -141,7 +142,7 @@ export default function DriverDashboard() {
 
   const uploadImageFile = async (base64Data: string, folder: string): Promise<string> => {
     const token = getDriverToken();
-    const res = await fetch("http://localhost:3001/api/upload", {
+    const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -205,7 +206,7 @@ export default function DriverDashboard() {
       }
 
       const token = getDriverToken();
-      const res = await fetch("http://localhost:3001/api/auth/profile", {
+      const res = await fetch(`${API_URL}/api/auth/profile`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -240,7 +241,7 @@ export default function DriverDashboard() {
     setWithdrawing(true);
     try {
       const token = getDriverToken();
-      const res = await fetch("http://localhost:3001/api/wallet/withdraw", {
+      const res = await fetch(`${API_URL}/api/wallet/withdraw`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -276,7 +277,7 @@ export default function DriverDashboard() {
     enabled: !!user?.id,
     queryFn: async () => {
       const token = getDriverToken();
-      const res = await fetch("http://localhost:3001/api/orders", {
+      const res = await fetch(`${API_URL}/api/orders`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch jobs");
@@ -330,7 +331,7 @@ export default function DriverDashboard() {
     setSendingMsg(true);
     try {
       const token = getDriverToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${jobId}/messages`, {
+      const res = await fetch(`${API_URL}/api/orders/${jobId}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -396,7 +397,7 @@ export default function DriverDashboard() {
 
       try {
         const token = getDriverToken();
-        await fetch(`http://localhost:3001/api/orders/${job.id}`, {
+        await fetch(`${API_URL}/api/orders/${job.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(patchData)
@@ -458,7 +459,7 @@ export default function DriverDashboard() {
 
       try {
         const token = getDriverToken();
-        await fetch(`http://localhost:3001/api/orders/${job.id}`, {
+        await fetch(`${API_URL}/api/orders/${job.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify(patchData)
@@ -526,7 +527,7 @@ export default function DriverDashboard() {
     setLoadingId(otpDialogItem.id);
     try {
       const token = getDriverToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${otpDialogItem.id}/verify-pickup`, {
+      const res = await fetch(`${API_URL}/api/orders/${otpDialogItem.id}/verify-pickup`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ otp: otpInput })
@@ -630,7 +631,7 @@ export default function DriverDashboard() {
       const signature = canvas.toDataURL(); // Get base64 PNG
 
       const token = getDriverToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${podDialogItem.id}`, {
+      const res = await fetch(`${API_URL}/api/orders/${podDialogItem.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ 
@@ -724,7 +725,7 @@ export default function DriverDashboard() {
   const executePatch = async (jobId: string, updateData: any, nextStatus: string) => {
     try {
       const token = getDriverToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${jobId}`, {
+      const res = await fetch(`${API_URL}/api/orders/${jobId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(updateData)
@@ -756,7 +757,7 @@ export default function DriverDashboard() {
       }
 
       const token = getDriverToken();
-      const res = await fetch(`http://localhost:3001/api/orders/${jobId}`, {
+      const res = await fetch(`${API_URL}/api/orders/${jobId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ status: "pending" })

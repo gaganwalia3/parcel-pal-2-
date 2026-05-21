@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { API_URL } from "@/config";
 
 interface Props { children: ReactNode; title: string; }
 
@@ -27,7 +28,7 @@ export const DashboardLayout = ({ children, title }: Props) => {
     const token = localStorage.getItem("pp_token");
     if (!token) return;
 
-    const sseUrl = `http://localhost:3001/api/orders/notifications/sse?token=${token}`;
+    const sseUrl = `${API_URL}/api/orders/notifications/sse?token=${token}`;
     const eventSource = new EventSource(sseUrl);
 
     eventSource.onmessage = (event) => {

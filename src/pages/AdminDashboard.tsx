@@ -11,6 +11,7 @@ import {
   BarChart3, ArrowUpRight, Loader2, Search, CloudRain, Zap
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { API_URL } from "@/config";
 
 export default function AdminDashboard() {
   const [config, setConfig] = useState<any>({
@@ -25,7 +26,7 @@ export default function AdminDashboard() {
     const fetchConfig = async () => {
       try {
         const token = localStorage.getItem("pp_token");
-        const res = await fetch("http://localhost:3001/api/admin/config", {
+        const res = await fetch(`${API_URL}/api/admin/config`, {
           headers: {
             "Authorization": `Bearer ${token}`,
             "x-admin-token": "parcel-pal-secret-2026"
@@ -46,7 +47,7 @@ export default function AdminDashboard() {
     setUpdatingConfig(true);
     try {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch("http://localhost:3001/api/admin/config", {
+      const res = await fetch(`${API_URL}/api/admin/config`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-all-orders"],
     queryFn: async () => {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch("http://localhost:3001/api/orders", {
+      const res = await fetch(`${API_URL}/api/orders`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch orders");
@@ -88,7 +89,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-profiles"],
     queryFn: async () => {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch("http://localhost:3001/api/admin/users", {
+      const res = await fetch(`${API_URL}/api/admin/users`, {
         headers: { "Authorization": `Bearer ${token}`, "x-admin-token": "parcel-pal-secret-2026" }
       });
       if (!res.ok) throw new Error("Failed to fetch profiles");

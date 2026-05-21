@@ -18,6 +18,7 @@ import { searchLocation, haversineDistance, GeocodingResult } from "@/lib/geo";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { API_URL } from "@/config";
 
 export default function SendPackage() {
   const { toast } = useToast();
@@ -131,7 +132,7 @@ export default function SendPackage() {
             }
             try {
               const token = localStorage.getItem("pp_token");
-              const res = await fetch("http://localhost:3001/api/auth/profile", {
+              const res = await fetch(`${API_URL}/api/auth/profile`, {
                 method: "PATCH",
                 headers: {
                   "Content-Type": "application/json",
@@ -224,7 +225,7 @@ export default function SendPackage() {
     }
     try {
       const token = localStorage.getItem("pp_token");
-      const res = await fetch("http://localhost:3001/api/auth/profile", {
+      const res = await fetch(`${API_URL}/api/auth/profile`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -278,7 +279,7 @@ export default function SendPackage() {
           lon: selectedPlaceGeo.lon
         };
       }
-      const res = await fetch("http://localhost:3001/api/auth/profile", {
+      const res = await fetch(`${API_URL}/api/auth/profile`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -306,7 +307,7 @@ export default function SendPackage() {
       setDistance(Math.round(dist));
 
       try {
-        const response = await fetch('http://localhost:3001/api/calculate-fare', {
+        const response = await fetch(`${API_URL}/api/calculate-fare`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
