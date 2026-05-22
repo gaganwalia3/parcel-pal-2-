@@ -162,7 +162,13 @@ export default function DriverDashboard() {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    if (!file.type.startsWith('image/')) {
+    // Check if image file using both MIME type and file extension fallback (robust for Windows)
+    const isImage = file.type?.startsWith('image/') || (() => {
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      return ext ? ['jpg', 'jpeg', 'png', 'gif', 'webp', 'jfif', 'heic', 'heif', 'bmp', 'tiff'].includes(ext) : false;
+    })();
+
+    if (!isImage) {
       toast.error("Please upload an image file");
       return;
     }
