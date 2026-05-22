@@ -23,7 +23,8 @@ const PORT = 3001;
 
 // --- 1. GLOBAL MIDDLEWARE ---
 app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(express.json()); // Parse incoming JSON payloads
+app.use(express.json({ limit: '10mb' })); // Parse incoming JSON payloads (increased limit for base64 image uploads)
+app.use(express.urlencoded({ limit: '10mb', extended: true })); // Parse incoming urlencoded payloads
 app.use(rateLimiter); // Protect API from DDoS/Spam attacks
 
 // --- 2. REQUEST LOGGER (For Viva Demo) ---
