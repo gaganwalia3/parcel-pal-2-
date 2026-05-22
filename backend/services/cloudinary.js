@@ -78,14 +78,25 @@ export const uploadImage = async (base64Data, folder = 'general') => {
 
   // Local filesystem fallback
   try {
-    // Parse base64 data
-    const matches = base64Data.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+    // Parse base64 data (robust to accept application/octet-stream or empty mime-type from Windows)
+    const matches = base64Data.match(/^data:([A-Za-z-+\/]*);base64,(.+)$/);
     if (!matches || matches.length !== 3) {
       throw new Error('Invalid base64 image format');
     }
 
+    const mimeType = matches[1] || 'image/jpeg';
     const imageBuffer = Buffer.from(matches[2], 'base64');
-    const extension = matches[1] === 'jpeg' ? 'jpg' : matches[1];
+    
+    let extension = 'jpg';
+    if (mimeType.includes('/')) {
+      const part = mimeType.split('/')[1];
+      if (part && part !== 'octet-stream') {
+        extension = part === 'jpeg' ? 'jpg' : part;
+      }
+    } else if (mimeType && mimeType !== 'base64') {
+      extension = mimeType === 'jpeg' ? 'jpg' : mimeType;
+    }
+
     const filename = `${folder}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${extension}`;
     
     const uploadsDir = path.resolve(__dirname, '../uploads');
